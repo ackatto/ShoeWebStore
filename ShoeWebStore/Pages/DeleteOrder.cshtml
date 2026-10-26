@@ -1,0 +1,14 @@
+﻿@page
+@model ShoeWebStore.Pages.DeleteOrderModel
+@{
+    ViewData["Title"] = "Удаление заказа";
+}
+<h2>Удаление заказа</h2>
+<p>Вы уверены, что хотите удалить заказ <strong>№@Model.OrderId</strong>?</p>
+<p class="text-danger">Внимание: все товары из этого заказа также будут удалены!</p>
+
+<form method="post">
+    <input type="hidden" name="id" value="@Model.OrderId" />
+    <button type="submit" class="btn btn-danger">Удалить</button>
+    <a href="/Orders" class="btn btn-secondary">Отмена</a>
+</form>

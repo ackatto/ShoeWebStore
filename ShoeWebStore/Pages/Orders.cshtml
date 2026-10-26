@@ -1,0 +1,41 @@
+﻿@page
+@model ShoeWebStore.Pages.OrdersModel
+@{
+    ViewData["Title"] = "Заказы";
+}
+<h2>Список заказов</h2>
+
+@if (Model.IsAdmin)
+{
+    <a href="/Order" class="btn btn-success mb-3">Добавить заказ</a>
+}
+
+<table class="table table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th>Артикул (ID)</th>
+            <th>Дата заказа</th>
+            <th>Клиент (ФИО)</th>
+            <th>Статус</th>
+            @if (Model.IsAdmin) { <th>Действия</th> }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var o in Model.Orders)
+        {
+            <tr>
+                <td>@o.Id</td>
+                <td>@o.OrderDate</td>
+                <td>@o.FullName</td>
+                <td>@o.Status</td>
+                @if (Model.IsAdmin)
+                {
+                    <td>
+                        <a href="/Order?id=@o.Id" class="btn btn-warning btn-sm">Ред.</a>
+                        <a href="/DeleteOrder?id=@o.Id" class="btn btn-danger btn-sm">Удалить</a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

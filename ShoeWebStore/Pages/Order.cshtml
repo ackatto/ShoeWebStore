@@ -1,0 +1,32 @@
+﻿@page
+@model ShoeWebStore.Pages.OrderModel
+@{
+    ViewData["Title"] = Model.IsEdit ? "Редактирование заказа" : "Новый заказ";
+}
+<h2>@(Model.IsEdit ? "Редактирование" : "Добавление") заказа</h2>
+
+<form method="post" style="max-width:500px">
+    <input type="hidden" asp-for="Item.Id" />
+    
+    @if (Model.IsEdit)
+    {
+        <div class="mb-2"><strong>Артикул (ID): @Model.Item.Id</strong></div>
+    }
+
+    <label>Дата заказа</label>
+    <!-- type="date" требует формат yyyy-MM-dd, поэтому приводим дату к нему -->
+    <input asp-for="Item.OrderDate" type="date" class="form-control mb-2" required />
+
+    <label>Клиент</label>
+    <select asp-for="Item.UserId" asp-items="Model.UsersList" class="form-select mb-2" required></select>
+
+    <label>Статус</label>
+    <select asp-for="Item.Status" class="form-select mb-2">
+        <option value="Новый">Новый</option>
+        <option value="В процессе">В процессе</option>
+        <option value="Выполнен">Выполнен</option>
+    </select>
+
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <a href="/Orders" class="btn btn-secondary">Отмена</a>
+</form>

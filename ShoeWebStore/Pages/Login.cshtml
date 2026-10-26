@@ -1,0 +1,21 @@
+﻿@page
+@model LoginModel
+@{
+	ViewData["Title"]="Вход";
+}
+<h2>Вход в систему</h2>
+
+<form method="post" style="max-width:400px">
+	<input asp-for="Login" class="form-control mb-2" placeholder="Логин"/>
+	<input asp-for="Password" type="password" class="form-control mb-2" placeholder="Логин"/>
+	<div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+	<button type="submit" class="btn btn-primary">Войти</button>
+	<a href="/Guest" class="btn btn-secondary">Войти как гость</a>
+</form>
+
+
+
+
+
+
+

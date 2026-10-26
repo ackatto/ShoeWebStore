@@ -1,0 +1,115 @@
+/* =========================================================
+   ПЕРЕМЕННЫЕ (МЕНЯЙ ЦВЕТА ЗДЕСЬ НА ЭКЗАМЕНЕ)
+   ========================================================= */
+:root {
+    --main-color: #546F94; /* Акцентный цвет (главные кнопки, ссылки) */
+    --secondary-bg: #ABCFCE; /* Дополнительный фон (шапка, панели) */
+    --hover-color: #435976; /* Цвет кнопки при наведении (чуть темнее main) */
+    /* Цвета из ТЗ обувного магазина */
+    --discount-bg: #2E8B57; /* Скидка > 15% */
+    --out-of-stock-bg: #ADD8E6; /* Нет на складе (lightblue) */
+}
+
+/* =========================================================
+   ГЛОБАЛЬНЫЕ ШРИФТЫ
+   ========================================================= */
+body, button, input, select, textarea {
+    /* Шрифт из ТЗ (если указан Comic Sans MS) */
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
+}
+
+/* =========================================================
+   КНОПКИ (Главные CRUD-операции)
+   ========================================================= */
+/* Перекрашиваем основные кнопки Bootstrap */
+.btn-primary,
+.btn-success,
+.btn-warning {
+    background-color: var(--main-color) !important;
+    border-color: var(--main-color) !important;
+    color: #ffffff !important;
+}
+
+    /* Эффект при наведении (чтобы не мигало дефолтным синим) */
+    .btn-primary:hover, .btn-success:hover, .btn-warning:hover,
+    .btn-primary:focus, .btn-success:focus, .btn-warning:focus {
+        background-color: var(--hover-color) !important;
+        border-color: var(--hover-color) !important;
+        color: #ffffff !important;
+    }
+
+/* Кнопка Удаления (оставляем красной по правилам UX) */
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+/* =========================================================
+   ШАПКА (NAVBAR)
+   ========================================================= */
+.navbar {
+    background-color: var(--secondary-bg) !important;
+}
+
+    /* Текст в шапке делаем темным для контраста */
+    .navbar .navbar-brand,
+    .navbar span,
+    .navbar a:not(.btn) {
+        color: #333333 !important;
+        font-weight: bold;
+    }
+
+/* =========================================================
+   КЛАССЫ ДЛЯ ПОДСВЕТКИ (если решишь использовать классы вместо inline)
+   ========================================================= */
+.row-discount {
+    background-color: var(--discount-bg);
+    color: white;
+}
+
+.row-out-of-stock {
+    background-color: var(--out-of-stock-bg);
+    color: black;
+}
+
+/* =========================================================
+   АДАПТИВНОСТЬ (Мобильная версия 390x844)
+   ========================================================= */
+@media (max-width: 768px) {
+    /* Уменьшаем шрифт заголовков на телефоне */
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    /* Если карточки товаров не влезают, отключаем рамки и делаем отступы меньше */
+    .row.border {
+        margin-bottom: 15px;
+    }
+
+    /* Скрываем лишний текст в шапке, если она ломается */
+    .navbar-brand span.d-none-mobile {
+        display: none;
+    }
+}
+
+/* =========================================================
+   ДЕФОЛТНЫЕ СТИЛИ (Не трогай, оставь как есть)
+   ========================================================= */
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+.btn:focus, .btn:active:focus, .form-control:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}

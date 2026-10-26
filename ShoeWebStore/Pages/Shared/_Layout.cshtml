@@ -1,0 +1,31 @@
+﻿
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Обувной магазин</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css" /> 
+    <link rel="stylesheet" href="~/css/site.css" />  
+</head>
+<body>    
+        <nav class="navbar navbar-dark bg-dark px-3 mb-4">            
+                <a class="navbar-brand" href="/Products">Обувной магазин</a>
+                <div class="d-flex align-items-center text-white">
+                    @if(Context.Session.GetString("Role") == "Администратор" || Context.Session.GetString("Role") == "Менеджер")
+                    {
+                        <a href="/Orders" class="btn btn-info me-2">Заказы</a>
+                    }
+                    @if(Context.Session.GetString("FullName")!=null)
+                    {
+                        <span class="me-3">@Context.Session.GetString("FullName")</span>
+                        <a href="/Logout" class="btn btn-outline-light">Выход</a>
+                    }                
+            </div>
+        </nav>
+
+    <div class="container">        
+            @RenderBody()        
+    </div>
+</body>
+</html>

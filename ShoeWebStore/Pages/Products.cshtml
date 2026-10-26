@@ -1,0 +1,109 @@
+﻿@page
+@model ShoeWebStore.Pages.ProductsModel
+@{
+	ViewData["Title"] = "Товары";
+}
+<h2>Список товаров</h2>
+
+@if(Model.IsManager)
+{
+	<form method="get" class="row g-2 mb-3">
+		<div class="col-md-3">
+			<input name="search" value="@Model.Search" class="form-control" placeholder="Поиск..." onchange="this.form.submit()"/>
+		</div>
+		<div class="col-md-3">
+			<select name="supplierId" class="form-select" onchange="this.form.submit()">
+				<option value="">Все поставщики</option>
+				@foreach(var s in Model.Suppliers)
+				{
+					<option value="@s.Id" selected="@(s.Id==Model.SupplierId)">@s.Name</option>
+				}
+			</select>
+		</div>
+		<div class="col-md-2">
+			<button name="sort" value="ASC" class="btn btn-outline-secondary btn-sm">↑</button>
+			<button name="sort" value="DESC" class="btn btn-outline-secondary btn-sm">↓</button>
+		</div>		
+		<div class="col-md-2 d-flex gap-1">
+    @if (Model.CurrentPage > 1)
+    {
+        <a asp-page="/Products" 
+           asp-route-pageNumber="@(Model.CurrentPage - 1)" 
+           asp-route-search="@Model.Search" 
+           asp-route-supplierId="@Model.SupplierId" 
+           asp-route-sort="@Model.Sort" 
+           class="btn btn-sm btn-secondary">Назад</a>
+    }
+
+    <span class="btn btn-sm btn-secondary disabled">@Model.CurrentPage</span>
+
+    <!-- Показываем "Вперед", если на странице ровно 5 товаров -->
+    @if (Model.Products.Count == 5)
+    {
+        <a asp-page="/Products" 
+           asp-route-pageNumber="@(Model.CurrentPage + 1)" 
+           asp-route-search="@Model.Search" 
+           asp-route-supplierId="@Model.SupplierId" 
+           asp-route-sort="@Model.Sort" 
+           class="btn btn-sm btn-secondary">Вперед</a>
+    }
+</div>
+	</form>
+}
+
+@if(Model.IsAdmin)
+{
+	<a href="/Product" class="btn btn-success mb-3">Добавить товар</a>
+}
+
+@foreach(var p in Model.Products)
+{
+    // Логика подсветки из ТЗ: >15% - зеленый (#2E8B57), нет на складе - голубой
+    var bg = p.Discount > 15 ? "#2E8B57" : (p.StockQuantity == 0 ? "lightblue" : "");
+    var txtColor = p.Discount > 15 ? "white" : "black";
+
+    <div class="row border g-0 mb-2" style="background-color:@bg; color:@txtColor">
+        <!-- Колонка с фото -->
+        <div class="col-md-2 p-2 border-end d-flex align-items-center justify-content-center">
+            <img src="@(string.IsNullOrEmpty(p.ImagePath) ? "/images/picture.png" : p.ImagePath)" 
+                 class="img-fluid" style="max-height: 100px; object-fit: contain;" />
+        </div>
+
+        <!-- Колонка с текстом (Категория | Название, описание и т.д.) -->
+        <div class="col-md-8 p-2 border-end">
+            <div class="mb-1">
+                <strong>@p.CategoryName | @p.Name</strong>
+            </div>
+            <div>Описание: @p.Description</div>
+            <div>Производитель: @p.ManufacturerName</div>
+            <div>Поставщик: @p.SupplierName</div>
+            <div>
+                Цена: 
+                @if(p.Discount > 0)
+                {
+                    <span style="color:red; text-decoration:line-through">@p.Price.ToString("F2")</span>
+                    <span class="ms-2" style="color:black; font-weight:bold;">@((p.Price * (1 - p.Discount / 100)).ToString("F2"))</span>
+                }
+                else
+                {
+                    @p.Price.ToString("F2")
+                }
+            </div>
+            <div>Единица измерения: @p.Unit</div>
+            <div>Количество на складе: @p.StockQuantity</div>
+        </div>
+
+        <!-- Колонка со скидкой и кнопками (если админ) -->
+        <div class="col-md-2 p-2 d-flex flex-column justify-content-center align-items-center text-center">
+            <div>Действующая скидка<br/><strong>@p.Discount%</strong></div>
+            
+            @if(Model.IsAdmin)
+            {
+                <div class="mt-2 d-flex gap-1">
+                    <a href="/Product?id=@p.Id" class="btn btn-warning btn-sm">Ред.</a>
+                    <a href="/Delete?id=@p.Id" class="btn btn-danger btn-sm">X</a>
+                </div>
+            }
+        </div>
+    </div>
+}

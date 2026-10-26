@@ -1,0 +1,80 @@
+﻿@page
+@model ProductModel
+@{	
+	ViewData["Title"] = Model.IsEdit ? "Редактирование" : "Добавление" ;
+}
+
+<h2>@(Model.IsEdit ? "Редактирование" : "Добавление") товара</h2>
+
+<form method="post" enctype="multipart/form-data" style="max-width:600px">
+	<input type="hidden" asp-for="Item.Id"/>
+    <!-- Сохраняем старый путь, если картинку не меняют -->
+    <input type="hidden" asp-for="Item.ImagePath" />
+
+@if (Model.IsEdit)
+{
+    <div class="mb-2">
+        <strong>ID: @Model.Item.Id</strong><br />
+        <!-- Показываем текущую картинку -->
+        <img src="@(string.IsNullOrEmpty(Model.Item.ImagePath) ? "/images/picture.png" : Model.Item.ImagePath)" 
+             style="width: 150px; height: 100px; object-fit: cover;" class="border mt-1" />
+    </div>
+}
+	<label>Наименование</label>
+	<input asp-for="Item.Name" class="form-control mb-2" required/>
+
+	<label>Описание</label>
+	<textarea asp-for="Item.Description" class="form-control mb-2"></textarea>
+
+	<label>Категория</label>
+	<select asp-for="Item.CategoryId" asp-items="Model.Categories" class="form-select mb-2"></select>
+
+	<label>Производитель</label>
+	<select asp-for="Item.ManufacturerId" asp-items="Model.Manufacturers" class="form-select mb-2"></select>
+
+	<label>Поставщик</label>
+	<select asp-for="Item.SupplierId" asp-items="Model.Suppliers" class="form-select mb-2"></select>
+
+	<label>Цена</label>
+	<input asp-for="Item.Price" type="number" step="0.01" min="0" class="form-control mb-2" required/>
+
+	<label>Единица Измерения</label>
+	<input asp-for="Item.Unit" class="form-control mb-2" required/>
+
+	<label>Кол-во на складе</label>
+	<input asp-for="Item.StockQuantity" type="number" min="0" class="form-control mb-2" required/>
+
+	<label>Скидка</label>
+	<input asp-for="Item.Discount" type="number" step="0.01" min="0" max="100" class="form-control mb-2"/>
+
+	<label>Фото</label>
+	<input type="file" name="UploadedImage" class="form-control mb-3"/>
+
+	<button type="submit" class="btn btn-primary">Сохранить</button>
+	<a href="/Products" class="btn btn-secondary">Отмена</a>
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        
+        let isEditing = localStorage.getItem('isEditingProduct');
+
+        if (isEditing === 'true') {
+            alert("Вы уже открыли окно редактирования товара. Пожалуйста, закройте его или сохраните изменения, прежде чем открывать новое.");
+            window.location.href = '/Products';
+        } else {
+            localStorage.setItem('isEditingProduct', 'true');
+        }
+       
+        window.addEventListener('beforeunload', function () {
+            localStorage.removeItem('isEditingProduct');
+        });
+        
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', function () {
+                localStorage.removeItem('isEditingProduct');
+            });
+        }
+    });
+</script>
